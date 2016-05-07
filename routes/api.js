@@ -2,9 +2,7 @@ exports.create = function(req, res){
 	var model = req.app.db.model.User;
 
 	var person = {
-		nickname: req.query.nickname,
-		name: req.query.tel,
-		tel: req.query.name
+		Phone: req.body.tel
 	};
 
 	var card = new model(person);
