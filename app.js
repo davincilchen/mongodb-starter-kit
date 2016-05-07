@@ -4,12 +4,9 @@
  */
 
 var express = require('express');
-var routes = require('./routes');
-var user = require('./routes/user');
 var http = require('http');
 var path = require('path');
 var busboy = require('connect-busboy');
-var hello = require('./routes/hello');
 var api = require('./routes/api');
 
 var app = express();
