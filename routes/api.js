@@ -1,5 +1,3 @@
-var vcard;
-
 exports.create = function(req, res){
 	var model = req.app.db.model.User;
 

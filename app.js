@@ -30,7 +30,7 @@ var vcardSchema = mongoose.Schema({
 
 app.db = {
 	model: {
-		User: mongoose.model('vcard', vcardSchema)
+		User: mongoose.model('User', vcardSchema)
 	}
 };
 
