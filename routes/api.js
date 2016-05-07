@@ -13,8 +13,12 @@ exports.create = function(req, res){
 
 exports.read = function(req, res){
 	var model = req.app.db.model.User;
+	var filter;
 
-	var vcard = model.find({}, function(err, vcard) {
+	filter = {
+	};	
+
+	var vcard = model.find(filter, function(err, vcard) {
 		res.send({
 			users: vcard
 		});

@@ -7007,13 +7007,12 @@
     "Email":"",
     "Address":"",
     "Age":null
-  }
-];
+  }];
 
   var db = connect('localhost/vcard');
 
   db.users.save(users);
 
-  print('0001-cimport-db finished.');
+  print('0001-import-db finished.');
 
 }
