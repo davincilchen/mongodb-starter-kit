@@ -85,7 +85,8 @@ exports.readByAgeRange = function(req, res){
 
 	model.aggregate([
 	  { $match: { Age: {$gte: from} } },
-	  { $match: { Age: {$lte: to} } }
+	  { $match: { Age: {$lte: to} } },
+	  { $sort: { Age: 1} }
 	])
 	.exec(function(err, users) {
 		res.send({
@@ -96,22 +97,38 @@ exports.readByAgeRange = function(req, res){
 };
 
 exports.update = function(req, res){
+	var model = req.app.db.model.User;	
 	var nickname = req.params.nickname;
+	var filters = {};
+	var fieldsToSet = {};
 
-	vcard.forEach(function (entry) {
-		if (entry.nickname === nickname) {
-			console.log('found!');
+	if (typeof nickname !== 'undefined') {
+		filters['Name'] = nickname;
+	}
 
-			entry.name =  req.query.name;
-			entry.tel =  req.query.tel;
-		}
+	fieldsToSet['$set'] = {};
+
+	if (typeof req.body.Phone !== 'undefined') {
+		fieldsToSet['$set'].Phone = req.body.Phone;
+	}
+
+	if (typeof req.body.Email !== 'undefined') {
+		fieldsToSet['$set'].Email = req.body.Email;
+	}
+
+	model.update(filters, fieldsToSet)
+	.exec(function(err, nModified) {
+		res.end();
 	});
-
-	res.end();
 };
 
 exports.delete = function(req, res){
-	res.end();
+	var model = req.app.db.model.User;
+	var nickname = req.params.nickname;
+
+	model.remove({Name: nickname}, function(err, vcard) {
+		res.end();
+	});
 };
 
 exports.createPost = function(req, res){
