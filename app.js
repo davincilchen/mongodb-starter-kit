@@ -12,7 +12,7 @@ var api = require('./routes/api');
 var app = express();
 
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/vcard');
+mongoose.connect('mongodb://jollen:123456@ds151242.mlab.com:51242/vcard');
 
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -55,6 +55,7 @@ if ('development' == app.get('env')) {
 // REST API
 app.post('/1/user', api.create);
 app.get('/1/user', api.read);
+app.get('/1/user/:name', api.readByName);
 app.put('/1/user/:nickname', api.update);
 app.delete('/1/user/:nickname', api.delete);
 

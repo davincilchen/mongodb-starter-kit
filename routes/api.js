@@ -2,10 +2,18 @@ exports.create = function(req, res){
 	var model = req.app.db.model.User;
 
 	var person = {
-		Phone: req.body.tel
+		Name: req.body.Name,
+		Phone: req.body.Phone,
+		Email: req.body.Email,
+		Address: req.body.Address,
+		Age: parseInt( req.body.Age )
 	};
 
+	// Open a new file (document)
 	var card = new model(person);
+
+	// Save file (document)
+	// See: https://docs.mongodb.com/manual/reference/method/db.collection.save/#db.collection.save
 	card.save();
 
 	res.end();
@@ -16,6 +24,22 @@ exports.read = function(req, res){
 	var filter;
 
 	filter = {
+	};	
+
+	var vcard = model.find(filter, function(err, vcard) {
+		res.send({
+			users: vcard
+		});
+		res.end();
+	});
+};
+
+exports.readByName = function(req, res){
+	var model = req.app.db.model.User;
+	var filter;
+
+	filter = {
+		Name: req.params.name
 	};	
 
 	var vcard = model.find(filter, function(err, vcard) {
