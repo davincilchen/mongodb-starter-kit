@@ -28,9 +28,16 @@ var vcardSchema = mongoose.Schema({
     Age: Number
 });
 
+var mapByCategoryAgeRangeSchema = mongoose.Schema({
+    _id: Number,
+    nUsers: { type: Number},
+    Names: [{ type: String }]
+});
+
 app.db = {
 	model: {
-		User: mongoose.model('User', vcardSchema)
+		User: mongoose.model('User', vcardSchema),
+    AgeRange: mongoose.model('AgeRange', mapByCategoryAgeRangeSchema)    
 	}
 };
 

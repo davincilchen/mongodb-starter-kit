@@ -109,6 +109,8 @@ function performanceNow() {
  */
 exports.readByReportAge = function(req, res){
 	var model = req.app.db.model.User;
+	var modelAgeRange = req.app.db.model.AgeRange;
+
 	var from = parseInt(req.params.from);
 	var to = parseInt(req.params.to);
 
@@ -125,10 +127,12 @@ exports.readByReportAge = function(req, res){
   		{ $sort: { _id: 1} }
 	])
 	.exec(function(err, users) {
+		var doc = new modelAgeRange(users.users);
+		doc.save();
+
 		res.send({
 			users: users
 		});
-		res.end();
 	});
 };
 
