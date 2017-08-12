@@ -108,32 +108,24 @@ function performanceNow() {
  * GET /1/user/report/age/:from/:to
  */
 exports.readByReportAge = function(req, res){
-	var model = req.app.db.model.User;
-	var modelAgeRange = req.app.db.model.AgeRange;
-
+	var model = req.app.db.model.AgeRange;
 	var from = parseInt(req.params.from);
 	var to = parseInt(req.params.to);
 
-	model.aggregate([
-		{ $match: { Age: {$gte: from} } },
-		{ $match: { Age: {$lte: to} } },
-		{ 
-			$group: {
-				_id: '$Age',
-				nUsers: { $sum: 1 },
-				Names: { $push: '$Name' }
-			}
-		},
-  		{ $sort: { _id: 1} }
+	model
+	.aggregate([
+		{ $project: {_id: 1, Names: 1} },
+		{ $match: { _id: {$gte: from} } },
+		{ $match: { _id: {$lte: to} } },
+		{ $sort : { _id: 1 } },
+		{ $unwind: '$Names' }
 	])
 	.exec(function(err, users) {
-		var doc = new modelAgeRange(users.users);
-		doc.save();
-
 		res.send({
-			users: users
+			data: users
 		});
-	});
+		res.end();
+	});	
 };
 
 exports.update = function(req, res){
