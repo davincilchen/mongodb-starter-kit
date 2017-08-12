@@ -62,6 +62,10 @@ app.delete('/1/user/:nickname', api.delete);
 app.get('/1/user/age/:age', api.readByAge);
 app.get('/1/user/age/:from/:to', api.readByAgeRange);
 
+// Data analysis
+app.get('/1/user/report/age/:from/:to', api.readByReportAge);
+
+// MapReduce
 app.get('/1/user/map/age', api.mapByAge);
 
 http.createServer(app).listen(app.get('port'), function(){

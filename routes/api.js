@@ -78,15 +78,46 @@ exports.readByAge = function(req, res){
 	});
 };
 
+/**
+ * GET /1/user/age/:from/:to
+ */
 exports.readByAgeRange = function(req, res){
 	var model = req.app.db.model.User;
 	var from = parseInt(req.params.from);
 	var to = parseInt(req.params.to);
 
 	model.aggregate([
-	  { $match: { Age: {$gte: from} } },
-	  { $match: { Age: {$lte: to} } },
-	  { $sort: { Age: 1} }
+		{ $match: { Age: {$gte: from} } },
+		{ $match: { Age: {$lte: to} } },
+		{ $sort: { Age: 1} }  
+	])
+	.exec(function(err, users) {
+		res.send({
+			users: users
+		});
+		res.end();
+	});
+};
+
+/**
+ * GET /1/user/report/age/:from/:to
+ */
+exports.readByReportAge = function(req, res){
+	var model = req.app.db.model.User;
+	var from = parseInt(req.params.from);
+	var to = parseInt(req.params.to);
+
+	model.aggregate([
+		{ $match: { Age: {$gte: from} } },
+		{ $match: { Age: {$lte: to} } },
+		{ 
+			$group: {
+				_id: '$Age',
+				nUsers: { $sum: 1 },
+				Names: { $push: '$Name' }
+			}
+		},
+  		{ $sort: { _id: 1} }
 	])
 	.exec(function(err, users) {
 		res.send({
