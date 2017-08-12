@@ -99,6 +99,11 @@ exports.readByAgeRange = function(req, res){
 	});
 };
 
+function performanceNow() {
+	var hr = process.hrtime();                                                            
+	return hr[0] * 1e9 + hr[1];
+}
+
 /**
  * GET /1/user/report/age/:from/:to
  */
