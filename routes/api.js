@@ -34,13 +34,19 @@ exports.read = function(req, res){
 	});
 };
 
+/**
+ * GET /1/user/:name
+ */
 exports.readByName = function(req, res){
 	var model = req.app.db.model.User;
-	var filter;
+	var filter = {};
+	var name = req.params.name;
 
-	filter = {
-		Name: req.params.name
-	};	
+	if (typeof name !== 'undefined') {
+		// Regular expression
+		var regex = new RegExp(name);
+		filter.Name = { $regex: regex };
+	};
 
 	var vcard = model.find(filter, function(err, vcard) {
 		res.send({
