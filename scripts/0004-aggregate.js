@@ -6,7 +6,7 @@
 	  		$group: {
 	  			_id: '$Age',
 	  			nUsers: { $sum: 1 },
-	  			Names: { $push: '$Name' }
+	  			Names: { $push: '$_id' }
 	  		}
 	  	},
   		{ $sort: { _id: 1} },
