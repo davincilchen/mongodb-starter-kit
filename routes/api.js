@@ -117,14 +117,18 @@ exports.readByReportAge = function(req, res){
 		{ $project: {_id: 1, Names: 1} },
 		{ $match: { _id: {$gte: from} } },
 		{ $match: { _id: {$lte: to} } },
-		{ $sort : { _id: 1 } },
-		{ $unwind: '$Names' }
+		{ $sort : { _id: 1 } }
 	])
-	.exec(function(err, users) {
-		res.send({
-			data: users
+	.exec(function(err, docs) {
+		var options = {
+			path: 'Names',
+			model: 'User'
+		};
+		model.populate(docs, options, function(err, users) {
+			res.send({
+				data: users
+			});
 		});
-		res.end();
 	});	
 };
 
